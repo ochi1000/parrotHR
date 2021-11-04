@@ -163,6 +163,20 @@
 		$result = $query->row();
 		return $result;          
     }
+    public function GetEmployeeTasks($id){
+    $sql = "SELECT `pro_task`.*,
+    `assign_task`.`assign_user`,
+      `employee`.`em_id`,`first_name`,`em_image`,
+      `project`.`pro_name`
+      FROM `pro_task`
+      LEFT JOIN `assign_task` ON `pro_task`.`id`=`assign_task`.`task_id`
+      LEFT JOIN `employee` ON `assign_task`.`assign_user`=`employee`.`em_id`
+      LEFT JOIN `project` ON `pro_task`.`pro_id`=`project`.`id`
+      WHERE `pro_task`.`id`='$id'";
+        $query=$this->db->query($sql);
+		$result = $query->row();
+		return $result;          
+    }
     public function GetFilesList($id){
     $sql = "SELECT `project_file`.*,
       `employee`.`first_name`,`em_image`

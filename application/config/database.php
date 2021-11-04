@@ -71,36 +71,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | the query builder class.
 */
 
-$subdomain = join('.', explode('.', $_SERVER['HTTP_HOST'], -1));
+// $subdomain = join('.', explode('.', $_SERVER['HTTP_HOST'], -1));
 
-$db['subdomainDB'] = array(
-	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => "hr_".$subdomain."_db",
-	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'production'),
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
-);	
+// $db['subdomainDB'] = array(
+// 	'dsn'	=> '',
+// 	'hostname' => 'localhost',
+// 	'username' => 'root',
+// 	'password' => '',
+// 	'database' => "hr_".$subdomain."_db",
+// 	'dbdriver' => 'mysqli',
+// 	'dbprefix' => '',
+// 	'pconnect' => FALSE,
+// 	'db_debug' => (ENVIRONMENT !== 'production'),
+// 	'cache_on' => FALSE,
+// 	'cachedir' => '',
+// 	'char_set' => 'utf8',
+// 	'dbcollat' => 'utf8_general_ci',
+// 	'swap_pre' => '',
+// 	'encrypt' => FALSE,
+// 	'compress' => FALSE,
+// 	'stricton' => FALSE,
+// 	'failover' => array(),
+// 	'save_queries' => TRUE
+// );	
+
+// for local
+// 'hostname' => 'localhost',
+// 'username' => 'root',
+// 'password' => '',
+// 'database' => 'parrothr',
 
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'genhr',
-	'password' => 'zercom@123',
-	'database' => 'genhr',
+	'username' => 'root',
+	'password' => '',
+	'database' => 'parrothr',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -117,9 +123,10 @@ $db['default'] = array(
 	'save_queries' => TRUE
 );
 
-if($subdomain){
-	$active_group = 'subdomainDB';
-}else{
-	$active_group = 'default';
-}
+// if($subdomain){
+// 	$active_group = 'subdomainDB';
+// }else{
+// 	$active_group = 'default';
+// }
+$active_group = 'default';
 $query_builder = TRUE;

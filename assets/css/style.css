@@ -32,12 +32,20 @@
 body {
     background: #fff;
    /*   font-family: "Poppins", sans-serif;*/
-    font-family: 'Open Sans', sans-serif
+    font-family: 'Open Sans', sans-serif;
     margin: 0;
     overflow-x: hidden;
     color: #67757c;
     font-weight: 300
 }
+.notification{
+    border-bottom: #e0e0e0 1px solid;
+    padding: 0.5rem;
+}
+#noNotifications{
+    display: none;
+}
+
 
 html {
     position: relative;

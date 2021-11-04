@@ -16,6 +16,7 @@ class Projects extends CI_Controller
 		$this->load->model('leave_model');
 		$this->load->model('logistic_model');
 		$this->load->model('attendance_model');
+		$this->load->model('notification_model');
 	}
 
 	public function index()
@@ -204,6 +205,7 @@ class Projects extends CI_Controller
 				if (empty($id)) {
 					$success  = $this->project_model->Add_Tasks($data);
 					$insertid = $this->db->insert_id();
+					
 					$data     = array();
 					$data     = array(
 						'task_id' => $insertid,
@@ -212,6 +214,35 @@ class Projects extends CI_Controller
 						'user_type' => 'Team Head'
 					);
 					$success  = $this->project_model->insert_members_Data($data);
+					
+					// Send Notification To Head
+                    $senderId = $this->session->userdata('user_login_id');
+                    $sender = $this->employee_model->emselectByID($senderId);
+                    $receiver = $this->employee_model->emselectByID($head);
+					
+					$notificationData = array(
+						'title' => 'Task Assignment',
+						'sender_id' => $senderId,
+						'sender_name' => $sender->first_name.' '.$sender->last_name,
+						'receiver_id' => $head,
+						'receiver_name' => $receiver->first_name.' '.$receiver->last_name
+					);
+					$this->notification_model->addNotification($notificationData);
+					//End of send notification
+
+					// Send Email Notification
+                    $from = $this->config->item('smtp_user');
+                    $this->email->from($from);
+                    $this->email->subject('Task Assignment From ParrotHR');
+                    $this->email->message('
+                        <p>Hello,</p>
+                        </br>
+                        <p>You have a Task Assignment From ParrotHR<p>
+                    ');
+					$this->email->to($receiver->em_email);
+					$this->email->send();
+                    
+
 					$emid     = $this->input->post('assignto[]');
 					foreach ($emid as $dataarray) {
 						$data    = array();
@@ -221,10 +252,35 @@ class Projects extends CI_Controller
 							'assign_user' => $dataarray,
 							'user_type' => 'Collaborators'
 						);
-				$success = $this->project_model->insert_members_Data($data);
+						$success = $this->project_model->insert_members_Data($data);
+						
+						// Send Notification To Collaborators
+						$receiver = $this->employee_model->emselectByID($dataarray);
+						$notificationData = array(
+							'title' => 'Task Assignment',
+							'sender_id' => $senderId,
+							'sender_name' => $sender->first_name.' '.$sender->last_name,
+							'receiver_id' => $dataarray,
+							'receiver_name' => $receiver->first_name.' '.$receiver->last_name
+						);
+						$this->notification_model->addNotification($notificationData);
+						//End of send notification
+						
+						// Send EMail Notifications
+						$from = $this->config->item('smtp_user');
+						$this->email->from($from);
+						$this->email->subject('Task Assignment From ParrotHR');
+						$this->email->message('
+						<p>Hello,</p>
+						</br>
+						<p>You have a Task Assignment From ParrotHR<p>
+						');
+						$this->email->to($receiver->em_email);
+						$this->email->send();
 					}
 					echo "Successfully Added";
-				} /*else {
+				}
+				/*else {
 					$success = $this->project_model->Update_Tasks($id, $data);
 					$success = $this->project_model->Delet_members_Data($id);
 					$emid    = $this->input->post('assignto[]');
@@ -400,7 +456,7 @@ class Projects extends CI_Controller
 	public function Add_File()
 	{
 		if ($this->session->userdata('user_login_access') != False) {
-			$emid    = $this->input->post('assignto');
+			$emid    = $this->session->userdata('user_login_id');
 			$proid   = $this->input->post('proid');
 			$details = $this->input->post('details');
 			$date    = date('d:m:y');
@@ -460,7 +516,7 @@ class Projects extends CI_Controller
 	{
 		if ($this->session->userdata('user_login_access') != False) {
 			$id      = $this->input->post('id');
-			$emid    = $this->input->post('assignto');
+			$emid    = $this->session->userdata('user_login_id');
 			$proid   = $this->input->post('proid');
 			$details = $this->input->post('details');
 			$date    = date('Y-m-d');

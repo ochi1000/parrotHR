@@ -16,8 +16,8 @@
          <div class="container-fluid">
             <div class="row m-b-10"> 
                 <div class="col-12">
-                    <button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a data-toggle="modal" data-target="#loanmodel" data-whatever="@getbootstrap" class="text-white"><i class="" aria-hidden="true"></i> Add Loan </a></button>
-                    <button type="button" class="btn btn-primary"><i class="fa fa-bars"></i><a href="<?php echo base_url(); ?>Loan/installment" class="text-white"><i class="" aria-hidden="true"></i>  Loan Installment</a></button>
+                    <button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a data-toggle="modal" data-target="#loanmodel" data-whatever="@getbootstrap" class="text-white"><i class="" aria-hidden="true"></i>Add Loan </a></button>
+                    <button type="button" class="btn btn-primary"><i class="fa fa-bars"></i><a href="<?php echo base_url(); ?>Loan/installment" class="text-white"><i class="" aria-hidden="true"></i>Loan Installment</a></button>
                 </div>
             </div> 
             <div class="row">
@@ -35,7 +35,7 @@
                                             <th>Name</th>
                                             <th>Employee Code</th>
                                             <th>Amount</th>
-<!--                                            <th>Interest Percentage </th>
+                                <!--    <th>Interest Percentage </th>
                                             <th>Installment Period </th>-->
                                             <th>Installment </th>
                                             <th>Total Pay </th>
@@ -45,21 +45,7 @@
                                             <th>Action </th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Employee Code</th>
-                                            <th>Amount</th>
-<!--                                            <th>Interest Percentage </th>
-                                            <th>Installment Period </th>-->
-                                            <th>Installment </th>
-                                            <th>Total Pay </th>
-                                            <th>Total Due </th>
-                                            <th>Approve Date </th>
-                                            <th>Status </th>
-                                            <th>Action </th>
-                                        </tr>
-                                    </tfoot>
+                                    
                                     <tbody>
                                        <?php foreach($loanview as $value): ?>
                                         <tr>

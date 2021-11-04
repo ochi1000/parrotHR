@@ -42,16 +42,16 @@
                                     <!--progress bar-->
                                     <div class="container">
 
-                                    <div class="progress blue">
+                                    <!-- <div class="progress blue">
                                     <span class="progress-left">
                                         <span class="progress-bar"></span>
                                     </span>
                                     <span class="progress-right">
                                         <span class="progress-bar"></span>
                                     </span>
-                                    <div class="progress-value">50%</div>
+                                    <div class="progress-value">100%</div>
                                     </div>
-                                    </div>                            
+                                    </div>                             -->
                                     <!--end progress-->                                   
                                     <h4 class="card-title m-t-10"><?php echo $details->pro_name; ?></h4>
                                 </center>
@@ -133,15 +133,7 @@
                                     <th>Assigned users </th>
                                 </tr>
                             </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Task Title </th>
-                                    <th>Start Date </th>
-                                    <th>End Date </th>
-                                    <th>Assigned users </th>
-                                </tr>
-                            </tfoot>
+                            
                             <tbody>
                                <?php foreach($tasklist as $value): ?>
                                 <tr>
@@ -185,16 +177,7 @@
                                     <th>Action </th>
                                 </tr>
                             </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Task Title </th>
-                                    <th>Start Date </th>
-                                    <th>End Date </th>
-                                    <th>Assigned users </th>
-                                    <th>Action </th>
-                                </tr>
-                            </tfoot>
+                            
                             <tbody>
                                <?php foreach($tasklist as $value): ?>
                                 <tr>
@@ -251,16 +234,7 @@
                                     <th>Status </th>
                                 </tr>
                             </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Task Title </th>
-                                    <th>Start Date </th>
-                                    <th>End Date </th>
-                                    <th>Assigned users </th>
-                                    <th>Status </th>
-                                </tr>
-                            </tfoot>
+                            
                             <tbody>
                                <?php foreach($tasklist as $value): ?>
                                 <tr>
@@ -305,18 +279,11 @@
                                 <tr>
                                     <th>File details</th>
                                     <th>file</th>
-                                    <th>Assigned Employee </th>
+                                    <th>Uploaded By </th>
                                     <th>Action </th>
                                 </tr>
                             </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>File details</th>
-                                    <th>file</th>
-                                    <th>Assigned Employee </th>
-                                    <th>Action </th>
-                                </tr>
-                            </tfoot>
+                            
                             <tbody>
                                <?php foreach($files as $value): ?>
                                 <tr>
@@ -337,26 +304,13 @@
                             </tbody>
                         </table>
                     </div>	                  
-                                        <?php if($this->session->userdata('user_type')!='EMPLOYEE'){ ?>                  
 			                                <form class="row" id="insert_education" action="Add_File" method="post" enctype="multipart/form-data">
 			                                	<span id="error"></span>
 			                                    <div class="form-group col-md-6 m-t-5">
 			                                        <label>File Name</label>
 			                                        <input type="text" class="form-control form-control-line" placeholder=" File description" name="details" required minlength="12"> 
 			                                    </div>
-			                                    <div class="form-group col-md-6 m-t-5">
-			                                        <label>Assign To</label>
-                                                <select class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" name="assignto" required>
-                                                <?php
-                                                $id = $details->id;
-                                                    echo $id;
-                                                $assignvalue = $this->project_model->getProjectAssignUser($id);  
-                                                ?>                                                   
-                                                    <?php foreach($assignvalue as $value): ?>
-                                                    <option value="<?php echo $value->em_id ?>"><?php echo $value->first_name.' '.$value->last_name; ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-			                                    </div>
+			                                    
 			                                    <div class="form-group col-md-6 m-t-5">
 			                                        <label>File</label>
 			                                        <input type="file" name="img_url" class="form-control form-control-line" placeholder=" Result" required> 
@@ -367,7 +321,6 @@
 			                                        <button type="button" class="btn btn-info">Cancel</button>
 			                                    </div>
 			                                </form>
-			                                <?php } ?>
 					                    </div>
                                     </div>
                                 </div>
@@ -379,17 +332,11 @@
                             <thead>
                                 <tr>
                                     <th>Note title</th>
-                                    <th>Assigned users </th>
-                                    <th>Status </th>
+                                    <th>Uploaded By</th>
+                                    <th>Action </th>
                                 </tr>
                             </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Note title</th>
-                                    <th>Assigned users </th>
-                                    <th>Status </th>
-                                </tr>
-                            </tfoot>
+                            
                             <tbody>
                                <?php foreach($notes as $value): ?>
                                 <tr>
@@ -411,23 +358,11 @@
 			                                    	    <label> notes</label>
 			                                    	    <input type="text" name="details" class="form-control form-control-line company_name" placeholder="Notes details"> 
 			                                    	</div>
-			                                    <div class="form-group col-md-6 m-t-5">
-			                                        <label>Assign To</label>
-                                                <select class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" name="assignto">
-                                                <?php
-                                                //$id = $details->id;
-                                                    //echo $id;
-                                                $assignvalue = $this->project_model->getProjectAssignUser($id);  
-                                                ?>                                                   
-                                                    <?php foreach($assignvalue as $value): ?>
-                                                    <option value="<?php echo $value->em_id ?>"><?php echo $value->first_name.' '.$value->last_name; ?></option>
-                                                    <?php endforeach; ?>
-                                                </select>
-			                                    </div>
+			                                    
 		                                    	<div class="form-actions col-md-12">
                                                     <input type="hidden" name="id" value="">
                                                     <input type="hidden" name="proid" value="<?php echo $details->id; ?>">
-		                                    	    <button <?php if($this->session->userdata('user_type')=='EMPLOYEE'){ ?> disabled <?php } ?> type="submit" class="btn btn-info"> <i class="fa fa-check"></i> Save</button>
+		                                    	    <button type="submit" class="btn btn-info"> <i class="fa fa-check"></i> Save</button>
 		                                    	    <button type="button" class="btn btn-info">Cancel</button>
 		                                    	</div>
 			                                </form>
@@ -448,15 +383,7 @@
                                     <th>Status </th>
                                 </tr>
                             </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Details</th>
-                                    <th>Assigned users </th>
-                                    <th>Date </th>
-                                    <th>Amount </th>
-                                    <th>Status </th>
-                                </tr>
-                            </tfoot>
+                            
                             <tbody>
                                <?php foreach($expenses as $value): ?>
                                 <tr>
@@ -527,16 +454,7 @@
                                     <th>Status </th>
                                 </tr>
                             </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Details</th>
-                                    <th>Assigned users </th>
-                                    <th>Date </th>
-                                    <th>Amount </th>
-                                    <th>Status </th>
-                                </tr>
-                            </tfoot>
+                            
                             <tbody>
                                <?php foreach($expenses as $value): ?>
                                 <tr>
@@ -588,16 +506,7 @@
                                     <th>Action </th>
                                 </tr>
                             </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Logistic Name</th>
-                                    <th>Assigned users </th>
-                                    <th>Quantity </th>
-                                    <th>Start Date </th>
-                                    <th>End Date </th>
-                                    <th>Action </th>
-                                </tr>
-                            </tfoot>
+                            
                             <tbody>
                                <?php foreach($logisticlist as $value): ?>
                                 <tr>

@@ -38,29 +38,20 @@
                                     <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>Project Title</th>
                                                 <th>Tasks Title </th>
+                                                <th>Project Title</th>
                                                 <th>Start Date </th>
                                                 <th>End Date </th>
                                                 <th>Assigned Employee </th>
                                                 <!--<th>Action </th>-->
                                             </tr>
                                         </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>Project Title</th>
-                                                <th>Tasks Title </th>
-                                                <th>Start Date </th>
-                                                <th>End Date </th>
-                                                <th>Assigned Employee </th>
-                                                <!--<th>Action </th>-->
-                                            </tr>
-                                        </tfoot>
+                                        
                                         <tbody>
                                            <?php foreach($tasks as $value): ?>
                                             <tr>
-                                                <td><?php echo substr($value->pro_name,0,25).'...' ?></td>
                                                 <td><?php echo substr($value->task_title,0,25).'...' ?></td>
+                                                <td><?php echo substr($value->pro_name,0,25).'...' ?></td>
                                                 <td><?php echo date('jS \of F Y',strtotime($value->start_date))  ?></td>
                                                 <td><?php echo date('jS \of F Y',strtotime($value->end_date)) ?></td>
                                                 <td>
@@ -97,7 +88,9 @@
                                     <div class="modal-body">
                                              <div class="form-group row">
                                                 <label class="control-label col-md-3">Project List</label>
+
                                                 <select class="form-control custom-select col-md-8 proid" data-placeholder="Select a Project" tabindex="1" name="projectid">
+                                                <option name='protitle' hidden selected>Select a Project</option>
                                                    <?php foreach($projects as $value): ?>
                                                     <option value="<?php echo $value->id; ?>"><?php echo $value->pro_name; ?></option>
                                                    <?php endforeach; ?>
@@ -204,6 +197,8 @@
                                                 }).done(function (response) {
                                                     console.log(response);
                                                     // Populate the form fields with the data returned from server
+
+													$('#tasksModalform').find('[name="protitle"]').text(response.provalue.pro_name).end();
 													$('#tasksModalform').find('[name="prostart"]').val(response.provalue.pro_start_date).end();
                                                     $('#tasksModalform').find('[name="proend"]').val(response.provalue.pro_end_date).end();
 												});

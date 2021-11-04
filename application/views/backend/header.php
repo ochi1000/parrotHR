@@ -45,11 +45,6 @@ date_default_timezone_set('Africa/Lagos');
             $id = $this->session->userdata('user_login_id');
             $basicinfo = $this->employee_model->GetBasic($id); 
             $settingsvalue = $this->settings_model->GetSettingsValue();
-            $year =  date('y');
-            $y = substr( $year, -2);
-            $date = date("m/d/$y");
-    #echo $date;
-            $leavetoday = $this->leave_model->GetLeaveToday($date); 
         ?>
     <div class="preloader">
         <svg class="circular" viewBox="25 25 50 50">
@@ -74,28 +69,25 @@ date_default_timezone_set('Africa/Lagos');
                         <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="mdi mdi-menu"></i></a> </li>
                         <li class="nav-item m-l-10"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted text-muted waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-message"></i>
-                                <!-- <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div> -->
+                            <a class="nav-link dropdown-toggle text-muted text-muted waves-effect waves-dark" href="#" onclick="seenNotification()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-bell"></i>
+                                <div id="notify" class="notify"> 
+                                    <span class="heartbit"></span> 
+                                    <span class="point"></span> 
+                                </div>
                             </a>
                             <div class="dropdown-menu mailbox scale-up-left">
                                 <ul>
-                                    <li>
+                                    <!-- <li>
                                         <div class="drop-title">Notifications</div>
-                                    </li>
+                                    </li> -->
                                     <li>
-                                        <div class="message-center">
-                                            <!-- Message -->
-                                            <?php foreach($leavetoday as $value): ?>
-                                            <a href="#">
-                                                <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
-                                                <div class="mail-contnet">
-                                                    <h5><?php echo $value->first_name; ?></h5> <span class="mail-desc"><?php echo $value->reason; ?></span> <span class="time"><?php echo $value->start_date; ?></span> </div>
-                                            </a>
-                                            <?php endforeach; ?>
+                                        <div id="noNotifications" class='notification'>No Notifications</div>
+                                        <div class="message-center" id="notification-center" >
+                                        <!-- Message -->
                                         </div>
                                     </li>
                                     <li>
-                                        <a class="nav-link text-center" href="javascript:void(0);"> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
+                                        <!-- <a class="nav-link text-center" href="javascript:void(0);"> <strong>More</strong> <i class="fa fa-angle-down"></i> </a> -->
                                     </li>
                                 </ul>
                             </div>
@@ -128,3 +120,69 @@ date_default_timezone_set('Africa/Lagos');
                 </div>
             </nav>
         </header>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="moment.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+    let notifyAlert = document.getElementById("notify");
+    notifyAlert.style.display = "none";
+    let noNotificationDiv = document.getElementById("noNotifications");
+    noNotificationDiv.style.display = "block";
+    
+    // setInterval(function() {
+        $.ajax({
+            type: "GET",
+            url: "<?php echo site_url('Dashboard/getNotifications'); ?>",
+            success: function(data) {
+                showNotification(data);
+            }
+        });
+    // }, 10000);
+    
+    
+});
+
+function showNotification(data) {
+    let title;
+    let sender;
+    let receiver;
+    let createdDate;
+    let parentDiv = document.getElementById('notification-center');
+    parentDiv.innerHTML = '';
+
+    data = JSON.parse(data)
+    data.map(function(element){
+        if (element.seen !== 'Seen') {
+            let notifyAlert = document.getElementById("notify");
+            notifyAlert.style.display = "block";
+
+            title = element.title;
+            sender = element.sender_name;
+            receiver = element.receiver_name;
+            createdDate = moment(element.created_date).fromNow()
+            let notificationElement = document.createElement('div');
+            notificationElement.className = 'notification'
+            notificationElement.innerHTML = `
+            <div style="font-size: 0.95rem; color: darkslategrey;">${sender} sent a ${title} <span style="font-size: 0.8rem;color: grey;"> ${createdDate.toString()}</span></div>
+            `
+            parentDiv.appendChild(notificationElement);
+            var arr = [title, sender, receiver, createdDate]
+
+            console.log(notificationElement)
+            console.log(arr)
+        }
+    })     
+}
+
+function seenNotification(){
+    axios.post('<?php echo site_url('Dashboard/seenNotifications'); ?>')
+    .then(function (response) {
+    console.log(response);
+  });
+    let notifyAlert = document.getElementById("notify");
+    notifyAlert.style.display = "none";
+}
+
+</script>

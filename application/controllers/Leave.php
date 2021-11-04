@@ -29,6 +29,7 @@ class Leave extends CI_Controller
         $this->load->model('leave_model');
         $this->load->model('settings_model');
         $this->load->model('project_model');
+        $this->load->model('notification_model');
     }
 
     public function index()
@@ -274,11 +275,36 @@ class Leave extends CI_Controller
                     'leave_duration' => $duration,
                     'leave_status' => 'Not Approve'
                 );
+                $employee = $this->employee_model->emselectByID($emid);
+                $receiver = $this->employee_model->emselectByID('Doe1753');
+
+                // Send Notification
+                $notificationData = array(
+                    'title' => 'Leave Application',
+                    'sender_id' => $emid,
+                    'sender_name' => $employee->first_name.' '.$employee->last_name,
+                    'receiver_id' => 'Doe1753',
+                    'receiver_name' => $receiver->first_name.' '.$receiver->last_name,
+                );
+            
                 if (empty($id)) {
                     $success = $this->leave_model->Application_Apply($data);
                     #$this->session->set_flashdata('feedback','Successfully Updated');
                     #redirect("leave/Application");
+                    $this->notification_model->addNotification($notificationData);
                     echo "Successfully Added";
+
+                    // Send EMail Notifications
+                    $from = $this->config->item('smtp_user');
+                    $this->email->from($from);
+                    $this->email->subject('Leave Application From ParrotHR');
+                    $this->email->message('
+                    <p>Hello,</p>
+                    </br>
+                    <p>You have a Leave Application From ParrotHR<p>
+                    ');
+                    $this->email->to($receiver->em_email);
+                    $this->email->send();
                 } else {
                     $success = $this->leave_model->Application_Apply_Update($id, $data);
                     #$this->session->set_flashdata('feedback','Successfully Updated');
