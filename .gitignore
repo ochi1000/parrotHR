@@ -7,6 +7,9 @@
 node_modules/
 dist/
 
+#Database Config
+application/config/database.php
+
 # Compiled Java class files
 *.class
 
