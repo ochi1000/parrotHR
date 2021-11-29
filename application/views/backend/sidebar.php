@@ -29,7 +29,12 @@
                         <li class="nav-devider"></li>
                         <li> <a href="<?php echo base_url(); ?>" ><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard </span></a></li>
                         <?php if($this->session->userdata('user_type')=='EMPLOYEE'){ ?>
-                        <li> <a class="has-arrow waves-effect waves-dark" href="<?php echo base_url(); ?>employee/view?I=<?php echo base64_encode($basicinfo->em_id); ?>" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Employees </span></a>
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span class="hide-menu">Employee </span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="<?php echo base_url(); ?>employee/view?I=<?php echo base64_encode($basicinfo->em_id); ?>">Profile </a></li>
+                                <li><a href="<?php echo base_url(); ?>employee/queries">Queries </a></li>
+                                <li><a href="<?php echo base_url(); ?>employee/requests">Requests</a></li>
+                            </ul>
                         </li>
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-rocket"></i><span class="hide-menu">Leave </span></a>
                             <ul aria-expanded="false" class="collapse">
@@ -44,7 +49,8 @@
                                 <li><a href="<?php echo base_url(); ?>Projects/All_Tasks"> Task List </a></li>
                                 <!--<li><a href="<?php #echo base_url(); ?>Projects/All_Tasks"> Field Visit</a></li>-->
                             </ul>
-                        </li>                                                                       
+                        </li>    
+                                                                 
                         <?php } else { ?>
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fa fa-building-o"></i><span class="hide-menu">Organization </span></a>
                             <ul aria-expanded="false" class="collapse">
@@ -56,9 +62,11 @@
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="<?php echo base_url(); ?>employee/Employees">Employees </a></li>
                                 <li><a href="<?php echo base_url(); ?>employee/Disciplinary">Disciplinary </a></li>
+                                <li><a href="<?php echo base_url(); ?>employee/employee_requests">Requests </a></li>
                                 <li><a href="<?php echo base_url(); ?>employee/Inactive_Employee">Inactive User </a></li>
                             </ul>
                         </li>
+                        
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-clipboard-text"></i><span class="hide-menu">Attendance </span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="<?php echo base_url(); ?>attendance/Attendance">Attendance List </a></li>
@@ -75,6 +83,7 @@
                                 <li><a href="<?php echo base_url(); ?>leave/Leave_report"> Report </a></li>
                             </ul>
                         </li>
+
                         <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-briefcase-check"></i><span class="hide-menu">Project </span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="<?php echo base_url(); ?>Projects/All_Projects">Projects </a></li>
@@ -82,22 +91,26 @@
                                 <li><a href="<?php echo base_url(); ?>Projects/Field_visit"> Field Visit</a></li>
                             </ul>
                         </li>
-                        <!-- <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-rocket"></i><span class="hide-menu">Assets </span></a>
+
+                     
+                        
+
+                        <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-rocket"></i><span class="hide-menu">Assets </span></a>
                         <ul aria-expanded="false" class="collapse">
-                            <li><a href="<?php //echo base_url(); ?>Logistice/Assets_Category"> Assets Category </a></li>
-                            <li><a href="<?php //echo base_url(); ?>Logistice/All_Assets"> Asset List </a></li>
-                            <li><a href="<?php #echo base_url(); ?>Logistice/View"> Logistic Support List </a></li>
-                            <li><a href="<?php //echo base_url(); ?>Logistice/logistic_support"> Logistic Support </a></li>
+                            <li><a href="<?php echo base_url(); ?>Logistice/Assets_Category"> Assets Category </a></li>
+                            <li><a href="<?php echo base_url(); ?>Logistice/All_Assets"> Asset List </a></li>
+                            <li><a href="<?php echo base_url(); ?>Logistice/View"> Logistic Support List </a></li>
+                            <li><a href="<?php echo base_url(); ?>Logistice/logistic_support"> Logistic Support </a></li>
                         </ul>
-                    </li> -->
+                    </li>
                     <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-newspaper"></i><span class="hide-menu">Payroll </span></a>
-                    <ul aria-expanded="false" class="collapse">
-                        <!--<li><a href="<?php #echo base_url(); ?>Payroll/Salary_Type"> Payroll Type </a></li>-->
-                        <li><a href="<?php echo base_url(); ?>Payroll/Salary_List"> Payroll List </a></li>
-                        <li><a href="<?php echo base_url(); ?>Payroll/Generate_salary"> Generate Payslip</a></li>
-                        <li><a href="<?php echo base_url(); ?>Payroll/Payslip_Report"> Payslip Report</a></li>
-                    </ul>
-                </li>
+                        <ul aria-expanded="false" class="collapse">
+                            <!--<li><a href="<?php #echo base_url(); ?>Payroll/Salary_Type"> Payroll Type </a></li>-->
+                            <li><a href="<?php echo base_url(); ?>Payroll/Salary_List"> Payroll List </a></li>
+                            <li><a href="<?php echo base_url(); ?>Payroll/Generate_salary"> Generate Payslip</a></li>
+                            <li><a href="<?php echo base_url(); ?>Payroll/Payslip_Report"> Payslip Report</a></li>
+                        </ul>
+                    </li>
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-rocket"></i><span class="hide-menu">Loan </span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="<?php echo base_url(); ?>Loan/View"> Grant Loan </a></li>

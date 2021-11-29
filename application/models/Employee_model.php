@@ -24,25 +24,32 @@
 	return $result;
 	}
     public function emselect(){
-    $sql = "SELECT * FROM `employee` WHERE `status`='ACTIVE'";
-    $query=$this->db->query($sql);
-  	$result = $query->result();
-  	return $result;
-	}
+      $sql = "SELECT * FROM `employee` WHERE `status`='ACTIVE'";
+      $query=$this->db->query($sql);
+      $result = $query->result();
+      return $result;
+    }
     public function emselectByID($emid){
-    $sql = "SELECT * FROM `employee`
-      WHERE `em_id`='$emid'";
-    $query=$this->db->query($sql);
-	$result = $query->row();
-	return $result;
-	}
+      $sql = "SELECT * FROM `employee` WHERE `em_id`='$emid'";
+      $query=$this->db->query($sql);
+      $result = $query->row();
+      return $result;
+    }
+    
+    public function getAdmins(){
+      $sql = "SELECT * FROM `employee` WHERE `em_role`='ADMIN'";
+      $query=$this->db->query($sql);
+      $result = $query->result();
+      return $result;
+    }
+
     public function emselectByCode($emid){
-    $sql = "SELECT * FROM `employee`
-      WHERE `em_code`='$emid'";
-    $query=$this->db->query($sql);
-	$result = $query->row();
-	return $result;
-	}
+      $sql = "SELECT * FROM `employee`
+        WHERE `em_code`='$emid'";
+      $query=$this->db->query($sql);
+      $result = $query->row();
+      return $result;
+      }
     public function getInvalidUser(){
       $sql = "SELECT * FROM `employee`
       WHERE `status`='INACTIVE'";
@@ -215,6 +222,37 @@
     }
     public function Add_Desciplinary($data){
         $this->db->insert('desciplinary',$data);
+    }
+    public function AddRequest($data){
+      $this->db->insert('requests',$data);
+    }
+    public function UpdateRequest($id, $data){
+      $this->db->where('id', $id);
+		  $this->db->update('requests',$data);   
+    }
+    public function GetEmployeeRequests(){
+      $sql = "SELECT * FROM `requests` ";
+      $query = $this->db->query($sql);
+      $result = $query->result();
+      return $result; 
+    }
+    public function GetRequests($id){
+      $sql = "SELECT * FROM `requests` WHERE `em_id`='$id'";
+      $query = $this->db->query($sql);
+      $result = $query->result();
+      return $result; 
+    }
+    public function GetSingleRequest($id){
+      $sql = "SELECT * FROM `requests` WHERE `id`='$id'";
+      $query = $this->db->query($sql);
+      $result = $query->row();
+      return $result; 
+    }
+    public function GetDisciplinary($id){
+      $sql = "SELECT * FROM `desciplinary` WHERE `em_id`='$id'";
+      $query = $this->db->query($sql);
+      $result = $query->result();
+      return $result; 
     }
     public function Add_BankInfo($data){
         $this->db->insert('bank_info',$data);

@@ -219,30 +219,14 @@ class Projects extends CI_Controller
                     $senderId = $this->session->userdata('user_login_id');
                     $sender = $this->employee_model->emselectByID($senderId);
                     $receiver = $this->employee_model->emselectByID($head);
+					$subject = 'Task Assignment';
+					$message = `
+						<h2>$subject</h2>
+						<p>You have received a Task Assignment </p>
+					`;
+					$this->notification_model->sendNotification($sender, $receiver, $subject, $message);	
 					
-					$notificationData = array(
-						'title' => 'Task Assignment',
-						'sender_id' => $senderId,
-						'sender_name' => $sender->first_name.' '.$sender->last_name,
-						'receiver_id' => $head,
-						'receiver_name' => $receiver->first_name.' '.$receiver->last_name
-					);
-					$this->notification_model->addNotification($notificationData);
-					//End of send notification
-
-					// Send Email Notification
-                    $from = $this->config->item('smtp_user');
-                    $this->email->from($from);
-                    $this->email->subject('Task Assignment From ParrotHR');
-                    $this->email->message('
-                        <p>Hello,</p>
-                        </br>
-                        <p>You have a Task Assignment From ParrotHR<p>
-                    ');
-					$this->email->to($receiver->em_email);
-					$this->email->send();
-                    
-
+					// Collaborators
 					$emid     = $this->input->post('assignto[]');
 					foreach ($emid as $dataarray) {
 						$data    = array();
@@ -256,27 +240,9 @@ class Projects extends CI_Controller
 						
 						// Send Notification To Collaborators
 						$receiver = $this->employee_model->emselectByID($dataarray);
-						$notificationData = array(
-							'title' => 'Task Assignment',
-							'sender_id' => $senderId,
-							'sender_name' => $sender->first_name.' '.$sender->last_name,
-							'receiver_id' => $dataarray,
-							'receiver_name' => $receiver->first_name.' '.$receiver->last_name
-						);
-						$this->notification_model->addNotification($notificationData);
-						//End of send notification
 						
-						// Send EMail Notifications
-						$from = $this->config->item('smtp_user');
-						$this->email->from($from);
-						$this->email->subject('Task Assignment From ParrotHR');
-						$this->email->message('
-						<p>Hello,</p>
-						</br>
-						<p>You have a Task Assignment From ParrotHR<p>
-						');
-						$this->email->to($receiver->em_email);
-						$this->email->send();
+						$this->notification_model->sendNotification($sender, $receiver, $subject, $message);
+						//End of send notification
 					}
 					echo "Successfully Added";
 				}

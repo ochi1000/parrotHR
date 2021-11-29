@@ -30,6 +30,7 @@ class Leave extends CI_Controller
         $this->load->model('settings_model');
         $this->load->model('project_model');
         $this->load->model('notification_model');
+
     }
 
     public function index()
@@ -153,6 +154,7 @@ class Leave extends CI_Controller
 
     public function Application()
     {
+        
         if ($this->session->userdata('user_login_access') != False) {
             $data['employee']    = $this->employee_model->emselect(); // gets active employee details
             $data['leavetypes']  = $this->leave_model->GetleavetypeInfo();
@@ -275,40 +277,22 @@ class Leave extends CI_Controller
                     'leave_duration' => $duration,
                     'leave_status' => 'Not Approve'
                 );
-                $employee = $this->employee_model->emselectByID($emid);
+                $sender = $this->employee_model->emselectByID($emid);
                 $receiver = $this->employee_model->emselectByID('Doe1753');
-
-                // Send Notification
-                $notificationData = array(
-                    'title' => 'Leave Application',
-                    'sender_id' => $emid,
-                    'sender_name' => $employee->first_name.' '.$employee->last_name,
-                    'receiver_id' => 'Doe1753',
-                    'receiver_name' => $receiver->first_name.' '.$receiver->last_name,
-                );
-            
+                $subject = 'Leave Application';
+                $message = `
+                    <h2>$subject</h2>
+                    <p>You have received a leave application </p>
+                `;       
                 if (empty($id)) {
                     $success = $this->leave_model->Application_Apply($data);
-                    #$this->session->set_flashdata('feedback','Successfully Updated');
-                    #redirect("leave/Application");
-                    $this->notification_model->addNotification($notificationData);
                     echo "Successfully Added";
 
-                    // Send EMail Notifications
-                    $from = $this->config->item('smtp_user');
-                    $this->email->from($from);
-                    $this->email->subject('Leave Application From ParrotHR');
-                    $this->email->message('
-                    <p>Hello,</p>
-                    </br>
-                    <p>You have a Leave Application From ParrotHR<p>
-                    ');
-                    $this->email->to($receiver->em_email);
-                    $this->email->send();
+                    // Send Notification
+                    $this->notification_model->sendNotification($sender, $receiver, $subject, $message);
                 } else {
                     $success = $this->leave_model->Application_Apply_Update($id, $data);
-                    #$this->session->set_flashdata('feedback','Successfully Updated');
-                    #redirect("leave/Application");
+
                     echo "Successfully Updated";
                 }
                 

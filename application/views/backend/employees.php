@@ -20,7 +20,7 @@
                 <div class="row m-b-10"> 
                     <div class="col-12">
                         <button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a href="<?php echo base_url(); ?>employee/Add_employee" class="text-white"><i class="" aria-hidden="true"></i> Add Employee</a></button>
-						<!-- <button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a href="#" class="text-white" data-toggle="modal" data-target="#Bulkmodal"><i class="" aria-hidden="true"></i>  Add Bulk Employees</a></button> -->
+						<button type="button" class="btn btn-info"><i class="fa fa-plus"></i><a href="#" class="text-white" data-toggle="modal" data-target="#Bulkmodal"><i class="" aria-hidden="true"></i>  Add Bulk Employees</a></button>
                         <button type="button" class="btn btn-primary"><i class="fa fa-bars"></i><a href="<?php echo base_url(); ?>employee/Disciplinary" class="text-white"><i class="" aria-hidden="true"></i>  Disciplinary List</a></button>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                 </div>
 
 				<!-- Bulk employee upload modal -->
-				<!-- <div id="Bulkmodal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div id="Bulkmodal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<form method="post" action="importEmployees" enctype="multipart/form-data">
@@ -84,7 +84,15 @@
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 							</div>
 							<div class="modal-body">
-								<h4>Upload only CSV file</h4>
+                                <div class='row'>
+                                    <div class='col'>
+                                        <p>Upload  file</p>
+                                    </div>
+                                    <div class='col'>
+                                        <a class='text-dark' href="<?php echo base_url();?>assets/documents/employee_bulk_upload_template.csv" download>Download Template</a>
+                                    </div>
+                                </div>
+								
 								
 							<input type="file" name="csv_file" id="csv_file" accept=".csv"><br><br>
 																		
@@ -95,10 +103,10 @@
 							</div>
 							</form>
 						</div>
-						/.modal-content
+						<!-- /.modal-content -->
 					</div>
-					/.modal-dialog
-				</div> -->
+					<!-- /.modal-dialog -->
+				</div>
 <?php $this->load->view('backend/footer'); ?>
 
 <?php if($this->session->userdata('user_type') == "ADMIN"): ?>	

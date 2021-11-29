@@ -38,31 +38,23 @@
                                         <thead>
                                             <tr>
                                                 <th>Employee Name</th>
-                                                <th>Staff ID</th>
+                                                <th>Disciplinary Action</th>
                                                 <th>Title </th>
                                                 <th>Description</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <!-- <tfoot>
-                                            <tr>
-                                                <th>Employee Name</th>
-                                                <th>PIN</th>
-                                                <th>Title </th>
-                                                <th>Description</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </tfoot> -->
+                                       
                                         <tbody>
                                            <?php foreach($desciplinary as $value): ?>
                                             <tr>
                                                 <td ><?php echo $value->first_name.' '.$value->last_name; ?></td>
-                                                <td ><?php echo $value->em_code; ?></td>
+                                                <td><?php echo $value->action; ?></td>
                                                 <td ><?php echo substr("$value->title",0,15).'...' ?></td>
                                                 <td><?php echo substr("$value->description",0,10).'...' ?> </td>
-                                                <td><button class="btn btn-sm btn-success"><?php echo $value->action; ?></button></td>
+                                                <td><?php $value->response == null ?  $status = 'Not Responded':  $status = 'Responded'; echo $status;?></td>
+
                                                 <td  class="jsgrid-align-center ">
                                                     <a href="#" title="Edit" class="btn btn-sm btn-info waves-effect waves-light disiplinary" data-id="<?php echo $value->id; ?>"><i class="fa fa-pencil-square-o"></i></a>
                                                     <a href="DeletDisiplinary?D=<?php echo $value->id; ?>" onclick="confirm('Are you sure want to delet this value?')" title="Delete" class="btn btn-sm btn-info waves-effect waves-light"><i class="fa fa-trash-o"></i></a>
@@ -107,6 +99,18 @@
                                                             <label for="message-text" class="control-label">Details</label>
                                                             <textarea class="form-control" value="" name="details" id="message-text1" rows="4"></textarea>
                                                         </div>
+                                                        <div class="form-group">
+                                                            <label for="message-text" class="control-label">Response</label>
+                                                            <textarea class="form-control" value="" name="response" readonly id="message-text1" rows="4"></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label">Close Action</label>
+                                                            <select class="form-control custom-select" data-placeholder="Choose a Category" tabindex="1" value="">  
+                                                                <option hidden selected>Choose an Action</option>
+                                                                <option value="Close">Close</option>
+                                                                <option value="Come to the office">Come to the office</option>
+                                                            </select>
+                                                        </div>
                                                     
                                                 </div>
                                                 <div class="modal-footer">
@@ -124,29 +128,31 @@
                         </div>
                     </div>
                 </div>
-<script type="text/javascript">
-                                        $(document).ready(function () {
-                                            $(".disiplinary").click(function (e) {
-                                                e.preventDefault(e);
-                                                // Get the record's ID via attribute  
-                                                var iid = $(this).attr('data-id');
-                                                $('#btnSubmit').trigger("reset");
-                                                $('#exampleModal').modal('show');
-                                                $.ajax({
-                                                    url: 'DisiplinaryByID?id=' + iid,
-                                                    method: 'GET',
-                                                    data: '',
-                                                    dataType: 'json',
-                                                }).done(function (response) {
-                                                    console.log(response);
-                                                    // Populate the form fields with the data returned from server
-													$('#btnSubmit').find('[name="id"]').val(response.desipplinary.id).end();
-                                                    $('#btnSubmit').find('[name="emid"]').val(response.desipplinary.em_id).end();
-                                                    $('#btnSubmit').find('[name="warning"]').val(response.desipplinary.action).end();
-                                                    $('#btnSubmit').find('[name="title"]').val(response.desipplinary.title).end();
-                                                    $('#btnSubmit').find('[name="details"]').val(response.desipplinary.description).end();
-												});
-                                            });
-                                        });
-</script>
-    <?php $this->load->view('backend/footer'); ?>
+            </div>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $(".disiplinary").click(function (e) {
+                        e.preventDefault(e);
+                        // Get the record's ID via attribute  
+                        var iid = $(this).attr('data-id');
+                        $('#btnSubmit').trigger("reset");
+                        $('#exampleModal').modal('show');
+                        $.ajax({
+                            url: 'DisiplinaryByID?id=' + iid,
+                            method: 'GET',
+                            data: '',
+                            dataType: 'json',
+                        }).done(function (response) {
+                            console.log(response);
+                            // Populate the form fields with the data returned from server
+                            $('#btnSubmit').find('[name="id"]').val(response.desipplinary.id).end();
+                            $('#btnSubmit').find('[name="emid"]').val(response.desipplinary.em_id).end();
+                            $('#btnSubmit').find('[name="warning"]').val(response.desipplinary.action).end();
+                            $('#btnSubmit').find('[name="title"]').val(response.desipplinary.title).end();
+                            $('#btnSubmit').find('[name="details"]').val(response.desipplinary.description).end();
+                            $('#btnSubmit').find('[name="response"]').val(response.desipplinary.response).end();
+                        });
+                    });
+                });
+            </script>
+<?php $this->load->view('backend/footer'); ?>

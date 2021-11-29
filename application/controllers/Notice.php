@@ -12,9 +12,7 @@ class Notice extends CI_Controller {
         $this->load->model('notice_model');
         $this->load->model('settings_model');
         $this->load->model('leave_model');
-        $this->load->model('notification_model');
-        $this->load->library('email');
-        $this->load->config('email');
+
     }
     
 	public function index()
@@ -78,45 +76,26 @@ class Notice extends CI_Controller {
                         'date' => $ndate
                     );
                     $success = $this->notice_model->Published_Notice($data); 
+                    echo "Successfully Added";
 
                     // Send Notification
                     $emid = $this->session->userdata('user_login_id');
                     $sender = $this->employee_model->emselectByID($emid);
 
-                    $employees =  $this->employee_model->emselect();
+                    $employees =  $this->employee_modjel->emselect();
+                    $subject = 'Notice';
+                    $message = `
+                        <h2>$subject</h2>
+                        <p>You have a notice from ParrotHR</p>
+                    `;
                     $employeeEmails = array();
                     $notificationData = array();
                     foreach ($employees as $employee) {
                         if ($employee->em_id != $emid) {
-                            $notificationData = array(
-                                'title' => 'Notice',
-                                'sender_id' => $emid,
-                                'sender_name' => $sender->first_name.' '.$sender->last_name,
-                                'receiver_id' => $employee->em_id,
-                                'receiver_name' => $employee->first_name.' '.$employee->last_name
-                            );
-                            $this->notification_model->addNotification($notificationData);
-                            array_push($employeeEmails,$employee->em_email);
+                            $this->notification_model->sendNotification($sender, $employee, $subject, $message);
                         }
                     }
-                    #$this->session->set_flashdata('feedback','Successfully Updated');
-                    #redirect("notice/All_notice");
-                    echo "Successfully Added";
-
-                    // Send Email Notification
-                    $from = $this->config->item('smtp_user');
-                    $this->email->from($from);
-                    $this->email->subject('Notice From ParrotHR');
-                    $this->email->message('
-                        <p>Hello,</p>
-                        </br>
-                        <p>You have a Notice from ParrotHR<p>
-                    ');
-                    foreach($employeeEmails as $employeeEmail){
-                        $this->email->to('chukajide@gmail.com');
-                        $this->email->send();
-                    }
-                    
+                                        
                 }else{
                     $data = array();
                     $data = array(
@@ -125,45 +104,25 @@ class Notice extends CI_Controller {
                         'date' => $ndate
                     );
                     $success = $this->notice_model->Published_Notice($data); 
+                    echo "Successfully Added";
 
+                    // Send Notification
                     $emid = $this->session->userdata('user_login_id');
                     $sender = $this->employee_model->emselectByID($emid);
 
-                    $employees =  $this->employee_model->emselect();
+                    $employees =  $this->employee_modjel->emselect();
+                    $subject = 'Notice';
+                    $message = `
+                        <h2>$subject</h2>
+                        <p>You have a notice from ParrotHR</p>
+                    `;
                     $employeeEmails = array();
-                    // Send Notification
+                    $notificationData = array();
                     foreach ($employees as $employee) {
                         if ($employee->em_id != $emid) {
-                            $notificationData = array(
-                                'title' => 'Notice',
-                                'sender_id' => $emid,
-                                'sender_name' => $sender->first_name.' '.$sender->last_name,
-                                'receiver_id' => $employee->em_id,
-                                'receiver_name' => $employee->first_name.' '.$employee->last_name
-                            );
-                            $this->notification_model->addNotification($notificationData);
-                            array_push($employeeEmails,$employee->em_email);
+                            $this->notification_model->sendNotification($sender, $employee, $subject, $message);
                         }
                     }
-
-                    // Send Email Notification
-                    $from = $this->config->item('smtp_user');
-                    $this->email->from($from);
-                    $this->email->subject('Notice From ParrotHR');
-                    $this->email->message('
-                        <p>Hello,</p>
-                        </br>
-                        <p>You have a Notice from ParrotHR<p>
-                    ');
-                    foreach($employeeEmails as $employeeEmail){
-                        $this->email->to('chukajide@gmail.com');
-                        $this->email->send();
-                        // $err = $this->email->print_debugger();
-                        // echo $err;exit;
-                    }
-                    #$this->session->set_flashdata('feedback','Successfully Updated');
-                    #redirect("notice/All_notice");
-                    echo "Successfully Added";
                 }
             }
         }

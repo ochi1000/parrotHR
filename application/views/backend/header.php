@@ -151,8 +151,7 @@ function showNotification(data) {
     let createdDate;
     let parentDiv = document.getElementById('notification-center');
     parentDiv.innerHTML = '';
-
-    data = JSON.parse(data)
+    data = JSON.parse(data);
     data.map(function(element){
         if (element.seen !== 'Seen') {
             let notifyAlert = document.getElementById("notify");
